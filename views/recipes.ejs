@@ -1,8 +1,25 @@
-<h1>This is Recipe Page!</h1>
+<%- include ("partials/header") %>
 
-<% recipes.forEach(function(recipe) { %>
-    <div>
-        <h4><%= recipe.name %></h4>
-        <img src="<%= recipe.image %>">
+<div class="container">
+        <header class="jumbotron">
+            <h1>Welcome to Veggie Recipes!</h1>
+            <p>View our wonderful food from all over the world</p>
+            <p>
+                <a class="btn btn-primary btn-large" href="/recipes/new">Add New Recipe</a>
+            </p>
+        </header>
+    
+    <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+        <% recipes.forEach(function(recipe) { %>
+            <div class="col-md-3 col-sm-6">
+                <figure class="figure">
+                    <img src="<%= recipe.image %>" class="figure-image img-fluid rounded">
+                    <figcaption class="figure-caption"><%= recipe.name %></figcaption>
+                </figure>
+            </div>
+        <% }) %>
     </div>
-<% }) %>
+</div>
+
+
+<!-- <%- include ("partials/footer") %> -->
