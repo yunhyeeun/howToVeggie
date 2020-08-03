@@ -1,0 +1,16 @@
+<%- include ("partials/header") %>
+
+<div class="container">
+    <header class="mt-5 mb-5">
+        <h2 class="text-center pt-5 pb-5"><%= recipe.name %></h2>
+        <p class="text-right"><%= recipe.created.toDateString() %></p>
+        <form id="delete-btn" class="float-right" action="/recipes/<%= recipe._id %>?_method=DELETE" method="POST">
+            <button class="btn">삭제</button>
+        </form>
+        <a class="float-right btn" href="/recipes/<%= recipe._id %>/edit">수정</a>
+    </header>
+    <div class="mb-5 text-center">
+        <img class="show-image rounded" alt="..." src="<%= recipe.image %>">
+    </div>
+    <p class="text-center"><%= recipe.body %></p>
+</div>

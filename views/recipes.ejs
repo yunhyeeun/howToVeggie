@@ -9,14 +9,21 @@
             </p>
         </header>
     
-    <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+    <div class="row row-cols-1 row-cols-md-3">
         <% recipes.forEach(function(recipe) { %>
-            <div class="col-md-3 col-sm-6">
-                <figure class="figure">
-                    <img src="<%= recipe.image %>" class="figure-image img-fluid rounded">
-                    <figcaption class="figure-caption"><%= recipe.name %></figcaption>
-                </figure>
+        <div class="col mb-4">
+            <div class="card">
+                <img src="<%= recipe.image %>" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"><%= recipe.name %></h5>
+                    <p class="card-text"><%= recipe.body %></p>
+                    <a class="card-link" href="/recipes/<%= recipe._id %>">더보기</a>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted"><%= recipe.created.toDateString() %></small></small>
+                </div>
             </div>
+        </div>
         <% }) %>
     </div>
 </div>
