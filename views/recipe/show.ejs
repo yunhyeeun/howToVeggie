@@ -1,0 +1,51 @@
+<%- include ("../partials/header") %>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-3">
+            <p class="lead">HowToVeggie</p>
+            <div class="list-group">
+                <li class="list-group-item active">Info 1</li>
+                <li class="list-group-item active">Info 2</li>
+                <li class="list-group-item active">Info 2</li>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card">
+                <img id="show-img" class="card-img-top img-responsive" alt="..." src="<%= recipe.image %>">
+                <header class="card-body caption-full">
+                    <h4><%= recipe.name %></h4>
+                        <form id="delete-btn" class="float-right" action="/recipes/<%= recipe._id %>?_method=DELETE" method="POST">
+                            <button class="btn">삭제</button>
+                        </form>
+                        <a class="float-right btn" href="/recipes/<%= recipe._id %>/edit">수정</a>
+                </header>
+                <p class="card-body"><%= recipe.body %></p>
+
+                <footer class="card-footer">
+                    <span class="float-right"><%= recipe.created.toDateString() %></span>
+                    
+                </footer>
+            </div>
+            <div class="mb-5"></div>
+            <div class="card bg-light">
+                <div class="card-body text-right">
+                    <a class="btn btn-success" href="/recipes/<%= recipe._id %>/comments/new">Add New Comment</a>
+                </div>
+                <hr>
+                <div class="card-body">
+                    <% recipe.comments.forEach(function (comment) { %>
+                        <strong><p><%= comment.author %></p></strong>
+                        <span class="float-right">10 days ago</span>
+                        <p><%= comment.text %></p>
+                    <% }) %>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+</div>

@@ -1,4 +1,4 @@
-<%- include ("partials/header") %>
+<%- include ("../partials/header") %>
 
 <div class="container">
         <header class="jumbotron">
@@ -16,7 +16,7 @@
                 <img src="<%= recipe.image %>" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title"><%= recipe.name %></h5>
-                    <p class="card-text"><%= recipe.body %></p>
+                    <p class="card-text"><%= recipe.body.substring(0,100) %>...</p>
                     <a class="card-link" href="/recipes/<%= recipe._id %>">더보기</a>
                 </div>
                 <div class="card-footer">
@@ -29,4 +29,4 @@
 </div>
 
 
-<!-- <%- include ("partials/footer") %> -->
+<!-- <%- include ("../partials/footer") %> -->

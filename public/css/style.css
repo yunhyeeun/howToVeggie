@@ -1,12 +1,4 @@
-.show-image {
-    max-width: 50%;
-}
-
-.edit-content-container {
-    width: 50%;
-    margin: 25px auto;
-}
-
-#delete-btn {
-    display: inline;
+#show-img {
+    max-height: 40em;
+    object-fit: cover;
 }

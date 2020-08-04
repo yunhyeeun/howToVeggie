@@ -5,6 +5,12 @@ const recipeSchema = new mongoose.Schema ({
     name: String,
     image: String,
     body: String,
+    comments: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Comment"
+        }
+    ],
     created: { type: Date, default: Date.now }
 });
 
