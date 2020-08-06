@@ -3,9 +3,17 @@ const express = require('express'),
       bodyParser = require('body-parser'),
       methodOverride = require("method-override"),
       mongoose = require("mongoose"),
+      passport= require("passport"),
+      localStrategy = require("passport-local"),
       app = express();
 
-//app config
+const Recipe = require("./models/recipe"),
+      Comment = require("./models/comment"),
+      User = require("./models/user");
+
+      const seedDB = require('./seed');
+
+// app config
 mongoose.connect("mongodb://localhost/howToVeggie", {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -19,11 +27,25 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
 
-const Recipe = require("./models/recipe"),
-      Comment = require("./models/comment");
-const seedDB = require('./seed');
+// passport config
+app.use(require("express-session")({
+    secret: "DO YOU WANNA BUILD THE SNOWMAN?",
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new localStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 seedDB();
+
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
+    next();
+});
+
 // RESTful routes
 app.get("/", (req, res) => res.redirect("/recipes"));
 
@@ -102,7 +124,8 @@ app.delete("/recipes/:id", (req, res) => {
 // ==================
 // COMMENT ROUTES
 // ==================
-app.get("/recipes/:id/comments/new", (req, res) => {
+
+app.get("/recipes/:id/comments/new", isLoggedIn, (req, res) => {
     Recipe.findById(req.params.id, (err, foundRecipe) => {
         if (err) {
             console.log(err);
@@ -112,7 +135,7 @@ app.get("/recipes/:id/comments/new", (req, res) => {
     });
 });
 
-app.post("/recipes/:id/comments", (req, res) => {
+app.post("/recipes/:id/comments", isLoggedIn, (req, res) => {
     Recipe.findById(req.params.id, (err, foundRecipe) => {
         if (err) {
             console.log(err);
@@ -131,4 +154,45 @@ app.post("/recipes/:id/comments", (req, res) => {
     });
 });
 
+// ==================
+// AUTHENTICATION ROUTES
+// ==================
+
+app.get("/register", (req, res) => res.render("register"));
+
+app.post("/register", (req, res) => {
+    const newUser = new User({ username: req.body.username});
+    User.register(newUser, req.body.password, (err, user) => {
+        if (err) {
+            console.log(err);
+            return res.render("/register");
+        } else {
+            passport.authenticate("local")(req, res, function() {
+                res.redirect("/recipes");
+            });
+        }
+    });
+});
+
+app.get("/login", (req, res) => res.render("login"));
+
+app.post("/login", passport.authenticate("local",
+    {
+        successRedirect: "/recipes",
+        failureRedirect: "/login"
+    }), (req, res) => {
+});
+
+app.get("/logout", (req, res) => {
+    req.logout();
+    res.redirect("recipes");
+});
+
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    } else {
+        return res.redirect("/login");
+    }
+}
 app.listen(port, () => console.log("Server Connected!"));
