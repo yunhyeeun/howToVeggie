@@ -16,10 +16,13 @@
                 <img id="show-img" class="card-img-top img-responsive" alt="..." src="<%= recipe.image %>">
                 <header class="card-body caption-full">
                     <h4><%= recipe.name %></h4>
-                        <form id="delete-btn" class="float-right" action="/recipes/<%= recipe._id %>?_method=DELETE" method="POST">
+                    <p style="display: inline"><em>Submitted By <%= recipe.author.username %></em></p>
+                    <% if (currentUser && recipe.author.id.equals(currentUser._id)) { %>
+                        <form class="delete-btn float-right" action="/recipes/<%= recipe._id %>?_method=DELETE" method="POST">
                             <button class="btn">삭제</button>
                         </form>
                         <a class="float-right btn" href="/recipes/<%= recipe._id %>/edit">수정</a>
+                    <% } %>
                 </header>
                 <p class="card-body"><%= recipe.body %></p>
 
@@ -36,8 +39,19 @@
                 <hr>
                 <div class="card-body">
                     <% recipe.comments.forEach(function (comment) { %>
-                        <strong><p><%= comment.author %></p></strong>
-                        <span class="float-right">10 days ago</span>
+                        <strong><span><%= comment.author.username %></span></strong>
+                        <div style="display:flex; justify-content: space-between; align-items: baseline" >
+                            <% if (currentUser && comment.author.id.equals(currentUser._id)) { %>
+                                <div>
+                                    <a class="pl-0 btn btn-xs" href="/recipes/<%= recipe._id %>/comments/<%= comment._id %>/edit">수정</a>
+                                    <form class ="delete-btn" action="/recipes/<%= recipe._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+                                        <input type="submit" class="btn btn-xs" value="삭제">
+                                    </form>
+                                </div>
+                            <% } %>
+                            <p class="float-right">10 days ago</p>
+                        </div>
+                        
                         <p><%= comment.text %></p>
                     <% }) %>
                 </div>

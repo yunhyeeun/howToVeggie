@@ -3,7 +3,7 @@
     <h1 style="text-align: center">Edit a <%= recipe.name %> Recipe</h1>
 
     <div class="edit-content-container">
-        <form class="mb-2" action="/recipes/<%= recipe._id %>?_method=PUT"? method="POST">
+        <form class="mb-2" action="/recipes/<%= recipe._id %>/?_method=PUT"? method="POST">
             <div class="form-group">
                 <input class="form-control" type="text" name="recipe[name]" value="<%= recipe.name %>">
             </div>
