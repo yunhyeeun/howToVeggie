@@ -1,5 +1,5 @@
 const express = require('express'),
-      port = 3000,
+      port = process.env.PORT || 3000,
       bodyParser = require('body-parser'),
       methodOverride = require("method-override"),
       mongoose = require("mongoose"),
@@ -17,8 +17,11 @@ const recipeRoutes = require("./routes/recipes"),
       commentRoutes = require("./routes/comments"),
       indexRoutes = require("./routes/index");
 
+const dbUrl = "mongodb+srv://new-user:kVoKQFMvtT5gDJ1L@cluster0.jnwxk.mongodb.net/<dbname>?retryWrites=true&w=majority";
+// "mongodb://localhost/howToVeggie",
+    //    
 // app config
-mongoose.connect("mongodb://localhost/howToVeggie", {
+mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
@@ -54,4 +57,4 @@ app.use("/", indexRoutes);
 app.use("/recipes", recipeRoutes);
 app.use("/recipes/:id/comments", commentRoutes);
 
-app.listen(port, () => console.log("Server Connected!"));
+app.listen(port, process.env.IP, () => console.log("Server Connected!"));
