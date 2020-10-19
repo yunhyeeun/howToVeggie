@@ -19,7 +19,7 @@ const recipeRoutes = require("./routes/recipes"),
 
 const dbUrl = "mongodb+srv://new-user:kVoKQFMvtT5gDJ1L@cluster0.jnwxk.mongodb.net/<dbname>?retryWrites=true&w=majority";
 // "mongodb://localhost/howToVeggie",
-    //    
+
 // app config
 mongoose.connect(dbUrl, {
     useNewUrlParser: true,
